@@ -24,24 +24,24 @@ export class AppComponent {
    userFields: FormlyFieldConfig = [{
      className: 'row',
      fieldGroup: [{
-         className: 'col-md-2',
+         className: 'col-lg-4',
          key: 'email',
          type: 'input',
          templateOptions: {
              type: 'email',
-             label: 'Email address',
-             placeholder: 'Enter email'
+             label: 'Email address*',
+             placeholder: 'Email Address'
          },
          validators: {
            validation: Validators.compose([Validators.required])
          }
      }, {
-         className: 'col-md-2',
+         className: 'col-lg-4',
          key: 'invite',
          type: 'input',
          templateOptions: {
              type: 'string',
-             label: 'Invite Code',
+             label: 'Invite Code*',
              placeholder: 'INVITECODE',
              pattern: ''
          },

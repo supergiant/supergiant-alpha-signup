@@ -138,6 +138,15 @@ header.site-header {
     width: 90px;
   }
 
+section.supergiant-use-cases {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+  section.supergiant-use-cases .card a {
+    display: block;
+    padding: 1.33em;
+  }
+
 footer.site-footer {
   background: #510B50;
   color: rgba(255,255,255,0.75);
@@ -210,6 +219,7 @@ header.jumbotron {
   padding-top: 2rem;
   padding-bottom: 3rem;
   margin-bottom: 0;
+  text-align: center;
 }
   .jumbotron h1,
   .jumbotron p {
@@ -236,13 +246,30 @@ header.jumbotron {
         text-align: center;
       }
 
+.supergiant-signup-form-section {
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+}
 .supergiant-signup-form-layout {
   box-shadow: 0 1px 4px rgba(0,0,0,.3);
-  margin: 1rem;
-  padding: 1rem 3rem;
+  margin-top: -4rem;
+  margin-bottom: 1rem;
+  padding: 1rem 3rem 2rem;
+  background: #fff;
 }
   .supergiant-signup-form-layout header h2 {
     margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .supergiant-signup-form-layout .form-text {
+    margin-top: -1em;
+  }
+    .supergiant-signup-form-layout .form-text a:link,
+    .supergiant-signup-form-layout .form-text a:visited {
+      text-decoration: underline;
+    }
+  .supergiant-signup-form-layout .form-action-button {
+    margin-top: 1em;
   }
 
 .page-section {

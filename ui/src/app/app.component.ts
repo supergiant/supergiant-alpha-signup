@@ -43,4 +43,9 @@ export class AppComponent {
          }
      }]
    }];
+
+   submit(user){
+     console.log(user)
+   }
+   ;
 }

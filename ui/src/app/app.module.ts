@@ -6,10 +6,14 @@ import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
 
 
 import { AppComponent } from './app.component';
+import { RequestComponent } from './request/request.component';
+import { ClaimComponent } from './claim/claim.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RequestComponent,
+    ClaimComponent
   ],
   imports: [
       NgbModule.forRoot(),

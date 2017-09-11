@@ -6,6 +6,9 @@
 /out-tsc
 /bindata/
 
+/build/ui/alpha-ui-linux-amd64
+/build/api/alpha-api-linux-amd64
+
 # dependencies
 /node_modules
 

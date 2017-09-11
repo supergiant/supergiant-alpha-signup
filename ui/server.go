@@ -29,7 +29,7 @@ func (fs fsWithDefault) Open(name string) (http.File, error) {
 
 func main() {
 	fs := fsWithDefault{
-		underlying: &assetfs.AssetFS{Asset: ui.Asset, AssetDir: ui.AssetDir, AssetInfo: ui.AssetInfo, Prefix: "ui/dist/"},
+		underlying: &assetfs.AssetFS{Asset: ui.Asset, AssetDir: ui.AssetDir, AssetInfo: ui.AssetInfo, Prefix: "ui/assets/dist/"},
 		defaultDoc: "index.html",
 	}
 

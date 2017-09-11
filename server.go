@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
-	"github.com/supergiant/supergiant/bindata/ui"
+	"github.com/supergiant/supergiant-alpha-signup/bindata/ui"
 )
 
 type fsWithDefault struct {

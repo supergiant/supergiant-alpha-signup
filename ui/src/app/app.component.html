@@ -1,53 +1,60 @@
 <main class="sectioned-page">
   <header class="jumbotron">
     <div class="container">
-      <h1>
-        <span class="header-title-line1">Supergiant</span>
-        <span class="header-title-line2">
-          Kubernetes <b>as a Service.</b>
-          <br>
-          <b>Supported.</b>
-        </span>
-      </h1>
+      <div class="row justify-content-md-center">
+        <div class="col-md-8">
+          <h1>
+            <span class="header-title-line1">Supergiant</span>
+            <span class="header-title-line2">
+              <b>Kubernetesas</b> a Service. <b>Supported.</b>
+            </span>
+          </h1>
 
-      <p class="lead">
-        We’re proud to offer our fully-automated ops platform to our alpha testing
-        community.
-      </p>
+          <p>
+            <b>
+              We're proud to offer our fully-automated ops platform to our alpha
+              testing community.
+            </b>
+          </p>
 
-      <p>
-        Supergiant is a supported auto-scaling cloud service that just works.
-        We’ve made Kubernetes auto-healing infrastructure and cloud portability
-        accessible to developers who want to ship a scalable cloud service or app.
-      </p>
+          <p>
+            Supergiant is a supported auto-scaling cloud service that just
+            works. We’ve made Kubernetes auto-healing infrastructure and cloud
+            portability accessible to developers who want to ship a scalable
+            service or app.
+          </p>
+        </div>
+      </div>
     </div>
   </header>
 
-  <section class="page-section">
+  <section class="page-section supergiant-signup-form-section">
     <div class="container">
+      <div class="row">
+        <div class="supergiant-signup-form-layout col-md-12">
+          <div class="row justify-content-md-center">
+            <div class="col-md-8">
+              <header>
+                <h2>Join the Alpha</h2>
+              </header>
 
-      <div class="row justify-content-md-center">
-        <div class="col-md-8">
-          <div class="supergiant-signup-form-layout">
-            <header>
-              <h2>Join the Alpha</h2>
-            </header>
+              <div class="supergiant-signup-form">
+                <div class="container-fluid">
+                  <form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+                    <formly-form [model]="user" [fields]="userFields">
+                      <div class="col-lg-2"></div>
 
-            <div class="supergiant-signup-form">
-              <div class="container-fluid">
-              <form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
-                  <formly-form [model]="user" [fields]="userFields">
+                      <button type="submit" class="btn btn-primary form-action-button">Activate</button>
+
                       <div class="col-lg-2"></div>
-                      <button type="submit" class="btn btn-primary">Activate</button>
-                      <div class="col-lg-2"></div>
-                  </formly-form>
-              </form>
+                    </formly-form>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -59,9 +66,6 @@
 
   <section class="page-section">
     <div class="container">
-      <!-- <header>
-        <h2>Quick Tour</h2>
-      </header> -->
 
       <div class="row align-items-center tour-detail">
         <div class="col-8">
@@ -160,24 +164,19 @@
     </div>
   </section>
 
-  <section class="page-section">
+  <section class="page-section supergiant-use-cases">
     <div class="container">
       <header>
         <h2>Use Cases</h2>
       </header>
 
-      <h4 class="card">
-        <a href="#" class="card-block">
-          How to Run a Multi-Million Dollar Auto-Scaling SaaS Business on
-          Kubernetes (blog/video link)
-        </a>
-      </h4>
-
-      <h4 class="card">
-        <a href="#" class="card-block">
-          How to Bring Compute Nodes Back From The Dead (blog/video link)
-        </a>
-      </h4>
+      <div class="row justify-content-md-center">
+        <h4 class="card col-md-8">
+          <a href="https://supergiant.io/blog/kubecon-zombie-kubernetes-raising-nodes-dead" class="card-block">
+            Mike Johnston at KubeCon EU: Zombie Kubernetes! Raising Nodes from the Dead
+          </a>
+        </h4>
+      </div>
     </div>
   </section>
 </main>

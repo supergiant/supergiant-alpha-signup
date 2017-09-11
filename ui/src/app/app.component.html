@@ -1,17 +1,183 @@
-beta copy woooo
-<br />
-<br />
-<br />
-<div class="container-fluid">
-<form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
-    <formly-form [model]="user" [fields]="userFields">
-      <div class="row">
-        <div class="col-lg-2"></div>
-        <button type="submit" class="btn btn-outline-primary col-lg-4">Activate</button>
-        <div class="col-lg-2"></div>
+<main class="sectioned-page">
+  <header class="jumbotron">
+    <div class="container">
+      <h1>
+        <span class="header-title-line1">Supergiant</span>
+        <span class="header-title-line2">
+          Kubernetes <b>as a Service.</b>
+          <br>
+          <b>Supported.</b>
+        </span>
+      </h1>
+
+      <p class="lead">
+        We’re proud to offer our fully-automated ops platform to our alpha testing
+        community.
+      </p>
+
+      <p>
+        Supergiant is a supported auto-scaling cloud service that just works.
+        We’ve made Kubernetes auto-healing infrastructure and cloud portability
+        accessible to developers who want to ship a scalable cloud service or app.
+      </p>
+    </div>
+  </header>
+
+  <section class="page-section">
+    <div class="container">
+
+      <div class="row justify-content-md-center">
+        <div class="col-md-8">
+          <div class="supergiant-signup-form-layout">
+            <header>
+              <h2>Join the Alpha</h2>
+            </header>
+
+            <div class="supergiant-signup-form">
+              <div class="container-fluid">
+              <form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+                  <formly-form [model]="user" [fields]="userFields">
+                      <div class="col-lg-2"></div>
+                      <button type="submit" class="btn btn-primary">Activate</button>
+                      <div class="col-lg-2"></div>
+                  </formly-form>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </formly-form>
-</form>
-</div>
-<br />
-beta copy wooooo
+
+    </div>
+  </section>
+
+  <!-- <section class="page-section">
+    <div class="container">
+      <h2>Video</h2>
+    </div>
+  </section> -->
+
+  <section class="page-section">
+    <div class="container">
+      <!-- <header>
+        <h2>Quick Tour</h2>
+      </header> -->
+
+      <div class="row align-items-center tour-detail">
+        <div class="col-8">
+          <h3>Unobstructed Kubernetes in the Cloud</h3>
+
+          <p>
+            Enjoy Kubernetes' self-healing infrastructure that just works at any
+            scale, designed by engineers at Google to run billions of containers
+            a week.
+          </p>
+        </div>
+
+        <div class="col-4 tour-illustration tour-illustration">
+          <i class="fa fa-cloud"></i>
+        </div>
+      </div>
+
+      <div class="row align-items-center tour-detail">
+        <div class="col-4 tour-illustration" style="">
+          <i class="fa fa-arrows-alt"></i>
+        </div>
+
+        <div class="col-8">
+          <h3>On-Demand Autoscaling on Any Cloud Provider</h3>
+
+          <p>
+            Automatically scale VMs and hardware to stay at > 80% utilization
+            on AWS, Packet.net, DigitalOcean, OpenStack, and GCE, with more
+            providers on the way.
+          </p>
+        </div>
+      </div>
+
+      <div class="row align-items-center tour-detail">
+        <div class="col-8">
+          <h3>Launch Services and Stacks Instantly From The Apps Marketplace</h3>
+
+          <p>
+            Push a button to launch cloud services like PostgreSQL, Nginx, Redis,
+            and Jenkins, or add your own Helm chart repos to be included in your
+            own personalized marketplace.
+          </p>
+        </div>
+
+        <div class="col-4 tour-illustration">
+          <i class="fa fa-rocket"></i>
+        </div>
+      </div>
+
+      <div class="row align-items-center tour-detail">
+        <div class="col-4 tour-illustration">
+          <i class="fa fa-terminal"></i>
+        </div>
+
+        <div class="col-8">
+          <h3>Everything You Can Do in the UI is Available in the API</h3>
+
+          <p>
+            Build with tools that support your workflow as you expand and grow.
+            Let Supergiant support your developers who just want to ship apps
+            from development to production.
+          </p>
+        </div>
+      </div>
+
+      <div class="row align-items-center tour-detail">
+        <div class="col-8">
+          <h3>100% Open Source</h3>
+
+          <p>
+            Supergiant is open-source under an Apache 2.0 license. We would love
+            your feedback to help make Supergiant even better.
+          </p>
+        </div>
+
+        <div class="col-4 tour-illustration">
+          <i class="fa fa-github"></i>
+        </div>
+      </div>
+
+      <div class="row align-items-center tour-detail">
+        <div class="col-4 tour-illustration">
+          <i class="fa fa-life-ring"></i>
+        </div>
+
+        <div class="col-8">
+          <h3>Awesome 24/7 Support. Really.</h3>
+
+          <p>
+            Supergiant is built and supported by the team behind Qbox.io -- the
+            same team trusted by hundreds of organizations to deliver timely
+            production support all over the world. We’ve got your back.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <header>
+        <h2>Use Cases</h2>
+      </header>
+
+      <h4 class="card">
+        <a href="#" class="card-block">
+          How to Run a Multi-Million Dollar Auto-Scaling SaaS Business on
+          Kubernetes (blog/video link)
+        </a>
+      </h4>
+
+      <h4 class="card">
+        <a href="#" class="card-block">
+          How to Bring Compute Nodes Back From The Dead (blog/video link)
+        </a>
+      </h4>
+    </div>
+  </section>
+</main>

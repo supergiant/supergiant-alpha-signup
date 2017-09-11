@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
 
+
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -11,13 +12,13 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    NgbModule.forRoot(),
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FormlyModule.forRoot(),
-    FormlyBootstrapModule,
-  ],
+      NgbModule.forRoot(),
+      BrowserModule,
+      FormsModule,
+      ReactiveFormsModule,
+      FormlyModule.forRoot(),
+      FormlyBootstrapModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

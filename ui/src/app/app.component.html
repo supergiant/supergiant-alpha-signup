@@ -34,23 +34,7 @@
         <div class="supergiant-signup-form-layout col-md-12">
           <div class="row justify-content-md-center">
             <div class="col-md-8">
-              <header>
-                <h2>Join the Alpha</h2>
-              </header>
-
-              <div class="supergiant-signup-form">
-                <div class="container-fluid">
-                  <form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
-                    <formly-form [model]="user" [fields]="userFields">
-                      <div class="col-lg-2"></div>
-
-                      <button type="submit" class="btn btn-primary form-action-button">Activate</button>
-
-                      <div class="col-lg-2"></div>
-                    </formly-form>
-                  </form>
-                </div>
-              </div>
+            <router-outlet></router-outlet>
             </div>
           </div>
         </div>

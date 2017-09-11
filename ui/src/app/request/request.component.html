@@ -1,3 +1,27 @@
-<p>
-  request works!
-</p>
+<header>
+  <h2>Request an Invite</h2>
+</header>
+
+<div *ngIf="this.state.status == 0 && this.state.error == false">
+  <div class="supergiant-signup-form">
+    <div class="container-fluid">
+      <form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+        <formly-form [model]="user" [fields]="userFields">
+          <div class="col-lg-2"></div>
+
+          <button type="submit" class="btn btn-primary form-action-button">Request</button>
+
+          <div class="col-lg-2"></div>
+        <br />
+        <br />
+          <small class="form-text text-muted">Already have a code? <a [routerLink]="['/']">Use your invite code</a>.</small>
+        </formly-form>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="this.state.status == 1 && this.state.error == false">
+  <p class="text-success"><h3>{{ this.state.message }}</h3><p>
+</div>

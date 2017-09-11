@@ -1,3 +1,42 @@
-<p>
-  claim works!
-</p>
+<header>
+  <h2>Join the Alpha</h2>
+</header>
+<div *ngIf="this.state.status == 0 && this.state.error == false">
+  <div class="supergiant-signup-form">
+    <div class="container-fluid">
+      <form role="form" novalidate [formGroup]="form" (ngSubmit)="useInvite(user)">
+        <formly-form [model]="user" [fields]="userFields">
+          <small class="form-text text-muted">Don't have a code? <a href="http://supergiant.io/joinalpha">Get one</a>.</small>
+          <div class="col-lg-2"></div>
+
+          <button type="submit" class="btn btn-primary form-action-button">Activate</button>
+
+          <div class="col-lg-2"></div>
+        </formly-form>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="this.state.status == 1 && this.state.error == true">
+  <p class="text-warning"><h3>{{ this.state.message }}</h3><p>
+    <div class="supergiant-signup-form">
+      <div class="container-fluid">
+        <form role="form" novalidate [formGroup]="form" (ngSubmit)="useInvite(user)">
+          <formly-form [model]="user" [fields]="userFields">
+            <small class="form-text text-muted">Don't have a code? <a href="http://supergiant.io/joinalpha">Get one</a>.</small>
+            <div class="col-lg-2"></div>
+
+            <button type="submit" class="btn btn-primary form-action-button">Activate</button>
+
+            <div class="col-lg-2"></div>
+          </formly-form>
+        </form>
+      </div>
+    </div>
+
+</div>
+
+<div *ngIf="this.state.status == 1 && this.state.error == false">
+  <p class="text-success"><h3>{{ this.state.message }}</h3><p>
+</div>

@@ -149,13 +149,13 @@ func (a *App) Run(addr string) {
 
 func main() {
 	a := App{}
-	db, err := sql.Open("sqlite3", "./local_test.db")
+	db, err := sql.Open("sqlite3", "./local.db")
 	if err != nil {
 		log.Fatal("Failed to init DB")
 	}
 	a.DB = db
 	a.Router = mux.NewRouter()
-	a.Router.HandleFunc("/invite", a.useInvite).Methods("GET")
-	// a.Router.HandleFunc("/product", a.createProduct).Methods("POST")
+	a.Router.HandleFunc("/claim", a.useInvite).Methods("GET")
+	//a.Router.HandleFunc("/request", a.createProduct).Methods("POST")
 	a.Run(":8080")
 }

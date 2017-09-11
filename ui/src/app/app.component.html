@@ -34,23 +34,15 @@
             </header>
 
             <div class="supergiant-signup-form">
-              <form>
-                <div class="form-group">
-                  <label for="signup-email">Email address</label>
-                  <input type="email" class="form-control" id="signup-email" placeholder="Email address">
-                  <small class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-
-                <div class="form-group">
-                  <label for="signup-invitation-code">Invite code</label>
-                  <input type="text" class="form-control" id="signup-invitation-code" placeholder="INV1TEC0DE">
-                  <small class="form-text text-muted">Don't have a code? <a href="/signup">Get one.</a></small>
-                </div>
-
-                <div class="form-group">
-                  <button type="submit" class="btn btn-primary">Join</button>
-                </div>
+              <div class="container-fluid">
+              <form role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+                  <formly-form [model]="user" [fields]="userFields">
+                      <div class="col-lg-2"></div>
+                      <button type="submit" class="btn btn-primary">Activate</button>
+                      <div class="col-lg-2"></div>
+                  </formly-form>
               </form>
+              </div>
             </div>
           </div>
         </div>

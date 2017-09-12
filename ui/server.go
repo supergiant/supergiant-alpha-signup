@@ -21,6 +21,7 @@ import (
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/keighl/mandrill"
 	_ "github.com/lib/pq"
 	"github.com/op/go-logging"
 	"github.com/supergiant/supergiant-alpha-signup/bindata/ui"
@@ -46,19 +47,23 @@ type Reset struct {
 
 // App basic app struct
 type App struct {
-	Router   *mux.Router
-	DB       *sql.DB
-	FS       fsWithDefault
-	APIToken string
+	Router      *mux.Router
+	DB          *sql.DB
+	FS          fsWithDefault
+	APIToken    string
+	SupportPass string
+	Mandrill    string
 }
 
 type core struct {
-	PGUser   string
-	PGPass   string
-	PGHost   string
-	PGPort   string
-	PGDB     string
-	APIToken string
+	PGUser      string
+	PGPass      string
+	PGHost      string
+	PGPort      string
+	PGDB        string
+	APIToken    string
+	SupportPass string
+	Mandrill    string
 }
 
 const (
@@ -113,6 +118,30 @@ func (fs fsWithDefault) Open(name string) (http.File, error) {
 		return fs.underlying.Open(fs.defaultDoc)
 	}
 	return f, err
+}
+
+func (a *App) sendEmail(to, subj, body string) {
+	client := mandrill.ClientWithKey(a.Mandrill)
+
+	message := &mandrill.Message{}
+	message.AddRecipient(to, "", "to")
+	message.FromEmail = "hello@supergiant.io"
+	message.FromName = "SuperGiant Support"
+	message.Subject = subj
+	message.Text = body
+	log.Debug(message)
+	responses, err := client.MessagesSend(message)
+	if err != nil {
+		log.Error("Failed to send email")
+		log.Error(err)
+	}
+	for _, response := range responses {
+		log.Debug(response.Email)
+		log.Debug(response.Id)
+		log.Debug(response.RejectionReason)
+		log.Debug(response.Status)
+	}
+
 }
 
 func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
@@ -207,7 +236,7 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 		      },
 		      "support": {
 		        "enabled": true,
-		        "password": "cheese1234"
+		        "password": "` + a.SupportPass + `"
 		      }
 		    },
 		    "ingress": {
@@ -277,6 +306,13 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 			log.Error(err)
 			log.Error("Failed to launch")
 		}
+		emailBody := `Welcome to the SuperGiant Alpha.
+		Your environment has been configured. You can log in at https://alpha.supergiant.io/` + customer + `/ui/
+		with the following credentials:
+		username:
+		password:
+		Please change your password once logged in.`
+		a.sendEmail(strings.Join(email, ""), "Welcome to the SuperGiant Alpha", emailBody)
 	}
 	respondWithJSON(w, http.StatusOK, invite)
 }
@@ -323,11 +359,23 @@ func main() {
 			Usage:       "SG API Token",
 			Destination: &cr.APIToken,
 		},
+		cli.StringFlag{
+			Name:        "supportpass",
+			Usage:       "Support User Password",
+			Destination: &cr.SupportPass,
+		},
+		cli.StringFlag{
+			Name:        "mandrill",
+			Usage:       "Mandrill email token",
+			Destination: &cr.Mandrill,
+		},
 	}
 
 	app.Action = func(c *cli.Context) error {
 		a := App{}
 		a.APIToken = cr.APIToken
+		a.SupportPass = cr.SupportPass
+		a.Mandrill = cr.Mandrill
 		a.FS = fsWithDefault{
 			underlying: &assetfs.AssetFS{Asset: ui.Asset, AssetDir: ui.AssetDir, AssetInfo: ui.AssetInfo, Prefix: "ui/assets/dist/"},
 			defaultDoc: "index.html",

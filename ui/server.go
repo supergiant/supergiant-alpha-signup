@@ -23,7 +23,7 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 	"github.com/op/go-logging"
-	"github.com/supergiant/supergiant-alpha-signup/ui/bindata/ui"
+	"github.com/supergiant/supergiant-alpha-signup/bindata/ui"
 	"github.com/urfave/cli"
 )
 
@@ -329,13 +329,14 @@ func main() {
 		a := App{}
 		a.APIToken = cr.APIToken
 		a.FS = fsWithDefault{
-			underlying: &assetfs.AssetFS{Asset: ui.Asset, AssetDir: ui.AssetDir, AssetInfo: ui.AssetInfo, Prefix: "assets/dist/"},
+			underlying: &assetfs.AssetFS{Asset: ui.Asset, AssetDir: ui.AssetDir, AssetInfo: ui.AssetInfo, Prefix: "ui/assets/dist/"},
 			defaultDoc: "index.html",
 		}
 		a.Router = mux.NewRouter()
+		a.Router.Handle("/", http.FileServer(a.FS))
 		a.Router.HandleFunc("/claim", a.useInvite).Methods("GET")
 		// a.Router.HandleFunc("/reset", a.resetPW).Methods("POST")
-		a.Router.Handle("/", http.FileServer(a.FS))
+
 		dbinfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 			cr.PGHost, cr.PGPort, cr.PGUser, cr.PGPass, cr.PGDB)
 		log.Debug(dbinfo)

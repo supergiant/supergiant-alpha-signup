@@ -5,12 +5,9 @@ package main
 //go:generate go-bindata -pkg ui -o bindata/ui/bindata.go ./assets/dist/...
 
 import (
-	"bytes"
-	"crypto/tls"
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
@@ -110,12 +107,15 @@ func RandomString(n int) string {
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
+	log.Debug("Sending JSON Error")
+	log.Debug(message)
 	respondWithJSON(w, code, map[string]string{"error": message})
 }
 
 func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	response, _ := json.Marshal(payload)
-
+	log.Debug("Sending JSON Success")
+	log.Debug(payload)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	w.Write(response)
@@ -182,9 +182,12 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
+			log.Debug("No Rows")
 			respondWithError(w, http.StatusNotFound, "Invalid Invite Code")
+			return
 		default:
 			respondWithError(w, http.StatusInternalServerError, err.Error())
+			return
 		}
 		return
 	}
@@ -195,12 +198,15 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 			log.Debug(err)
 			log.Debug("Row scan failed")
 			respondWithError(w, http.StatusNotFound, "Invalid Invite Code")
+			return
 		}
 		log.Debug(count)
 	}
 
 	if count == "0" {
+		log.Debug("0 Count")
 		respondWithError(w, http.StatusNotFound, "Invalid Invite Code")
+		return
 	}
 	// this is a terrible hack because of the no rows error not bubbling up
 	row, err = a.DB.Query("SELECT * FROM invites WHERE invite=$1 AND claimed=0 LIMIT 1", strings.Join(invite, ""))
@@ -208,129 +214,52 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 		switch err {
 		case sql.ErrNoRows:
 			respondWithError(w, http.StatusNotFound, "Invalid Invite Code")
+			return
 		default:
 			respondWithError(w, http.StatusInternalServerError, err.Error())
+			return
 		}
 		return
 	}
-
+	var i Invite
 	if row.Next() {
-		//for row.Next() {
-		var i Invite
+
 		// byte arrays to work around null fields
 		var col2, col3, col4, col5 []byte
 		if err := row.Scan(&i.ID, &col2, &col3, &col4, &col5); err != nil {
 			log.Debug(err)
 			log.Debug("Row scan failed")
 			respondWithError(w, http.StatusNotFound, "Invalid Invite Code")
+			return
 		}
-		i.Email = string(col2)
+		i.Email = strings.Join(email, "")
 		i.Invite = string(col3)
 		i.URL = string(col4)
 		i.Claimed, err = strconv.ParseBool(string(col5))
 		log.Debug(i)
-		// TODO: call function to launch helm chart
-		//}
-		//}
-		customer := RandomString(16)
-		helmJSON := []byte(`{
-		  "chart_name": "supergiant",
-		  "chart_version": "0.1.0",
-		  "config": {
-		    "api": {
-		      "enabled": true,
-		      "image": {
-		        "pullPolicy": "Always",
-		        "repository": "supergiant/supergiant-api",
-		        "tag": "unstable-linux-x64"
-		      },
-		      "name": "supergiant-api",
-		      "resources": {},
-		      "service": {
-		        "externalPort": 80,
-		        "internalPort": 8080
-		      },
-		      "support": {
-		        "enabled": true,
-		        "password": "` + a.SupportPass + `"
-		      }
-		    },
-		    "ingress": {
-		      "annotations": {
-		        "traefik.frontend.rule.type": "PathPrefixStrip"
-		      },
-		      "enabled": true,
-		      "name": "supergiant"
-		    },
-		    "persistence": {
-		      "accessMode": "ReadWriteOnce",
-		      "enabled": true,
-		      "size": "8Gi",
-		      "storageClass": "generic"
-		    },
-		    "ui": {
-		      "enabled": true,
-		      "image": {
-		        "pullPolicy": "Always",
-		        "repository": "supergiant/supergiant-ui",
-		        "tag": "unstable-linux-x64"
-		      },
-		      "name": "supergiant-ui",
-		      "replicaCount": 1,
-		      "resources": {},
-		      "service": {
-		        "externalPort": 80,
-		        "internalPort": 3001
-		      }
-		    },
-		    "uniqueurl": "` + customer + `"
-		  },
-		  "kube_name": "sgalpha1",
-		  "name": "` + customer + `",
-		  "repo_name": "supergiant",
-		  "namespace": "` + customer + `"
-		}`)
-		tr := &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-		client := &http.Client{Transport: tr}
-
-		_, err = client.Get("https://admin.alpha.supergiant.io/api/v0/helm_releases")
-		if err != nil {
-			log.Error(err)
-			log.Error("Failed to launch")
-		}
-
-		log.Debug(string(helmJSON))
-
-		req, err := http.NewRequest("POST", "https://admin.alpha.supergiant.io/api/v0/helm_releases", bytes.NewBuffer(helmJSON))
-		if err != nil {
-			log.Error(err)
-			log.Error("Failed to launch")
-		}
-		req.Header.Add("Authorization", `SGAPI token="`+a.APIToken+`"`)
-		//req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Add("Content-Type", `application/json`)
-		log.Debug(req)
-		log.Debug("------")
-		log.Debug(req.Body)
-		resp, err := client.Do(req)
-		log.Debug(resp)
-		bs, _ := ioutil.ReadAll(resp.Body)
-		log.Debug(string(bs))
-		if err != nil {
-			log.Error(err)
-			log.Error("Failed to launch")
-		}
-		emailBody := `Welcome to the SuperGiant Alpha.
-		Your environment has been configured. You can log in at https://alpha.supergiant.io/` + customer + `/ui/
-		with the following credentials:
-		username:
-		password:
-		Please change your password once logged in.`
-		a.sendEmail(strings.Join(email, ""), "Welcome to the SuperGiant Alpha", emailBody)
+		go ConfigEnv(a, i)
 	}
-	respondWithJSON(w, http.StatusOK, invite)
+
+	sqlStatement := `
+UPDATE invites
+SET email = $1
+WHERE ID = (SELECT ID FROM invites WHERE invite=$2 and claimed=0 ORDER BY ID LIMIT 1);`
+	re, err := a.DB.Exec(sqlStatement, strings.Join(email, ""), strings.Join(invite, ""))
+	log.Debug("Claim result")
+	log.Debug(re)
+	log.Debug(err)
+	sqlStatement = `
+UPDATE invites
+SET claimed = 1
+WHERE email = $1
+AND invite = $2;`
+	re, err = a.DB.Exec(sqlStatement, strings.Join(email, ""), strings.Join(invite, ""))
+	log.Debug("Claim result")
+	log.Debug(re)
+	log.Debug(err)
+
+	respondWithJSON(w, http.StatusOK, i.Invite)
+	return
 }
 
 func (a *App) Run() {

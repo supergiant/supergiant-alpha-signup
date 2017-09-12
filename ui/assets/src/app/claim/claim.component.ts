@@ -58,18 +58,17 @@ export class ClaimComponent implements OnInit {
 
   useInvite(user){
     this.http.get('http://localhost:3001/claim?invite=' + user.invite + '&email=' + user.email).map(response => response.json()).subscribe(
-      (result) => { if (result['error']) {
-        this.state.status=1
-        this.state.error=true;
-        this.state.message = "Invalid invite code - you can request an invite below"
-      } else {
-        this.state.status=1
-        this.state.error=false;
-        this.state.message = "Thank you, you will receive an email with login information shortly"
-      }
+      (result) => {
+        this.state.status = 1
+        this.state.error = false;
+        this.state.message = 'Thank you, you will receive an email with login information shortly'
+      }, (error) => {
+        this.state.status = 1
+        this.state.error = false;
+        this.state.message = 'Invalid invite code.'
+      });
     }
-    );
-  }
+
 
   resetInvite(){
     this.state.status=0

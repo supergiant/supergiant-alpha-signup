@@ -58,14 +58,15 @@ export class ClaimComponent implements OnInit {
   constructor(private http: Http, angulartics2GoogleTagManager: Angulartics2GoogleTagManager) { }
 
   useInvite(user){
-    this.http.get('http://localhost:3001/claim?invite=' + user.invite + '&email=' + user.email).map(response => response.json()).subscribe(
+    this.http.get('https://alpha.supergiant.io/claim?invite=' + user.invite.toUppercase() + '&email=' + user.email).map(
+      response => response.json()).subscribe(
       (result) => {
         this.state.status = 1
         this.state.error = false;
         this.state.message = 'Thank you, you will receive an email with login information shortly'
       }, (error) => {
         this.state.status = 1
-        this.state.error = false;
+        this.state.error = true;
         this.state.message = 'Invalid invite code.'
       });
     }

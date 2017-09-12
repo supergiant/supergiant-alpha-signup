@@ -333,7 +333,7 @@ func main() {
 			defaultDoc: "index.html",
 		}
 		a.Router = mux.NewRouter()
-		a.Router.Handle("/", http.FileServer(a.FS))
+		a.Router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(a.FS)))
 		a.Router.HandleFunc("/claim", a.useInvite).Methods("GET")
 		// a.Router.HandleFunc("/reset", a.resetPW).Methods("POST")
 

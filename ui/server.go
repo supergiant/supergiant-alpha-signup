@@ -381,8 +381,8 @@ func main() {
 			defaultDoc: "index.html",
 		}
 		a.Router = mux.NewRouter()
-		a.Router.Handle("/", http.FileServer(a.FS))
 		a.Router.HandleFunc("/claim", a.useInvite).Methods("GET")
+		a.Router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(a.FS)))
 		// a.Router.HandleFunc("/reset", a.resetPW).Methods("POST")
 
 		dbinfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",

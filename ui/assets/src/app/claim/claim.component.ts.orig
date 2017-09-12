@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Angulartics2GoogleTagManager } from 'angulartics2';
 import {Validators, FormGroup} from '@angular/forms';
 import {FormlyFieldConfig} from 'ng-formly';
 import { Http, Response, Headers } from '@angular/http';
@@ -55,10 +54,11 @@ export class ClaimComponent implements OnInit {
     },]
   }];
 
-  constructor(private http: Http, angulartics2GoogleTagManager: Angulartics2GoogleTagManager) { }
+  constructor(private http: Http) { }
 
   useInvite(user){
     this.http.get('http://localhost:3001/claim?invite=' + user.invite + '&email=' + user.email).map(response => response.json()).subscribe(
+<<<<<<< HEAD
       (result) => {
         this.state.status = 1
         this.state.error = false;
@@ -68,6 +68,17 @@ export class ClaimComponent implements OnInit {
         this.state.error = false;
         this.state.message = 'Invalid invite code.'
       });
+=======
+      (result) => { if (result['error']) {
+        this.state.status=1
+        this.state.error=true;
+        this.state.message = "That invite code is invalid, but you can request an invitation below."
+      } else {
+        this.state.status=1
+        this.state.error=false;
+        this.state.message = "Thank you, you will receive an email with login information shortly."
+      }
+>>>>>>> dc591f5d9069d4d6853a847ca11d3f88e5460ac4
     }
 
 

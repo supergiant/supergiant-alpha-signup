@@ -219,7 +219,6 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 			respondWithError(w, http.StatusInternalServerError, err.Error())
 			return
 		}
-		return
 	}
 	var i Invite
 	if row.Next() {

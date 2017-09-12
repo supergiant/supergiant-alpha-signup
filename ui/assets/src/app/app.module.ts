@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 
 import { AppComponent } from './app.component';
 import { RequestComponent } from './request/request.component';
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
       ReactiveFormsModule,
       FormlyModule.forRoot(),
       FormlyBootstrapModule,
+      Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),
       RouterModule.forRoot(
       appRoutes
     )

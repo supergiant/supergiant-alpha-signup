@@ -1,3 +1,5 @@
+import { Angulartics2GoogleTagManager } from 'angulartics2';
+
 import { Component } from '@angular/core';
 
 import {Validators, FormGroup} from '@angular/forms';
@@ -11,4 +13,5 @@ import {FormlyFieldConfig} from 'ng-formly';
 
 export class AppComponent {
   title = 'app'
+  constructor(angulartics2GoogleTagManager: Angulartics2GoogleTagManager) {}
 }

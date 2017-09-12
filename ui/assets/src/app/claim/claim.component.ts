@@ -61,11 +61,11 @@ export class ClaimComponent implements OnInit {
       (result) => { if (result['error']) {
         this.state.status=1
         this.state.error=true;
-        this.state.message = "Invalid invite code - you can request an invite below"
+        this.state.message = "That invite code is invalid, but you can request an invitation below."
       } else {
         this.state.status=1
         this.state.error=false;
-        this.state.message = "Thank you, you will receive an email with login information shortly"
+        this.state.message = "Thank you, you will receive an email with login information shortly."
       }
     }
     );

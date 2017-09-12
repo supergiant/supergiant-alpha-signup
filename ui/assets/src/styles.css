@@ -261,6 +261,15 @@ header.jumbotron {
     margin-top: 0.5rem;
     margin-bottom: 0;
   }
+  .supergiant-signup-form-layout .text-notice {
+    background: #e8f8f8;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    color: #444;
+    display: block;
+    font-size: 22px;
+    padding: 0.5em;
+    text-align: center;
+  }
   .supergiant-signup-form-layout .form-text {
     margin-top: -1em;
   }

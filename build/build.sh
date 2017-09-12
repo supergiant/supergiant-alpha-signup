@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cd ui && npm install && ng build --env=prod  && cd ..
+cd ui && npm install && ng build --prod  && cd ..
 
-go-bindata -pkg ui -o bindata/ui/bindata.go ui/dist/...
+go-bindata -pkg ui -o bindata/ui/bindata.go assets/dist/...
 
 go run server.go

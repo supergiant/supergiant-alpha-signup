@@ -6,7 +6,7 @@ TAG=${TRAVIS_BRANCH:-unstable}
 BUILD_TARGETS=darwin/amd64,linux/amd64
 LDFLAGS="-X main.version=$(git describe --tags)"
 
-cd ui/assets && npm install && ng build --env=prod  && cd ../..
+cd ui/assets && npm install && ng build --prod  && cd ../..
 go-bindata -pkg ui -o bindata/ui/bindata.go ui/assets/dist/...
 
 xgo -ldflags "$LDFLAGS" -go 1.7.1 --targets=$BUILD_TARGETS -out dist/alpha-ui ./ui

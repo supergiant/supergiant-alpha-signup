@@ -57,15 +57,15 @@ export class ClaimComponent implements OnInit {
   constructor(private http: Http) { }
 
   useInvite(user){
-    this.http.get('http://localhost:8080/claim?invite=' + user.invite + '&email=' + user.email).map(response => response.json()).subscribe(
+    this.http.get('http://localhost:3001/claim?invite=' + user.invite + '&email=' + user.email).map(response => response.json()).subscribe(
       (result) => { if (result['error']) {
         this.state.status=1
         this.state.error=true;
-        this.state.message = result["Invalid invite code - you can request an invite below"]
+        this.state.message = "Invalid invite code - you can request an invite below"
       } else {
         this.state.status=1
         this.state.error=false;
-        this.state.message = result["Thank you, you will receive an email with login information shortly"]
+        this.state.message = "Thank you, you will receive an email with login information shortly"
       }
     }
     );
@@ -76,7 +76,6 @@ export class ClaimComponent implements OnInit {
     this.state.error=false;
     this.state.message = ''
   }
-
 
   ngOnInit() {
 

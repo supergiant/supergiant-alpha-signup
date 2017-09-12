@@ -236,17 +236,19 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 		i.URL = string(col4)
 		i.Claimed, err = strconv.ParseBool(string(col5))
 		log.Debug(i)
+		i.URL = RandomString(16)
 		go ConfigEnv(a, i)
 	}
 
 	sqlStatement := `
 UPDATE invites
-SET email = $1
+SET email = $1, url = $3
 WHERE ID = (SELECT ID FROM invites WHERE invite=$2 and claimed=0 ORDER BY ID LIMIT 1);`
-	re, err := a.DB.Exec(sqlStatement, strings.Join(email, ""), strings.Join(invite, ""))
+	re, err := a.DB.Exec(sqlStatement, strings.Join(email, ""), strings.Join(invite, ""), i.URL)
 	log.Debug("Claim result")
 	log.Debug(re)
 	log.Debug(err)
+
 	sqlStatement = `
 UPDATE invites
 SET claimed = 1

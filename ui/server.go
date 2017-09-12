@@ -74,6 +74,22 @@ const (
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
+func WaitFor(desc string, d time.Duration, i time.Duration, fn func() (bool, error)) error {
+	started := time.Now()
+	for {
+		if done, err := fn(); done {
+			return nil
+		} else if err != nil {
+			return err
+		}
+		elapsed := time.Since(started)
+		if elapsed > d {
+			return fmt.Errorf("Timed out waiting for %s", desc)
+		}
+		time.Sleep(i)
+	}
+}
+
 func RandomString(n int) string {
 
 	b := make([]byte, n)

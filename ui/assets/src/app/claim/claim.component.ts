@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Angulartics2GoogleTagManager } from 'angulartics2';
 import {Validators, FormGroup} from '@angular/forms';
 import {FormlyFieldConfig} from 'ng-formly';
 import { Http, Response, Headers } from '@angular/http';
@@ -54,7 +55,7 @@ export class ClaimComponent implements OnInit {
     },]
   }];
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, angulartics2GoogleTagManager: Angulartics2GoogleTagManager) { }
 
   useInvite(user){
     this.http.get('http://localhost:3001/claim?invite=' + user.invite + '&email=' + user.email).map(response => response.json()).subscribe(

@@ -58,7 +58,9 @@ export class ClaimComponent implements OnInit {
   constructor(private http: Http, angulartics2GoogleTagManager: Angulartics2GoogleTagManager) { }
 
   useInvite(user){
-    this.http.get('https://alpha.supergiant.io/claim?invite=' + user.invite.toUppercase() + '&email=' + user.email).map(
+    const inviteCode = String(user.invite).toUpperCase()
+    // this.http.get('http://localhost:3001/claim?invite=' + inviteCode+ '&email=' + user.email).map(
+    this.http.get('https://alpha.supergiant.io/claim?invite=' + inviteCode + '&email=' + user.email).map(
       response => response.json()).subscribe(
       (result) => {
         this.state.status = 1

@@ -16,7 +16,7 @@ func ConfigEnv(a *App, i Invite) {
 	// TODO: call function to launch helm chart
 	//}
 	//}
-	customer := RandomString(16)
+	customer := i.URL
 	// customer := "67tlog534wydz5bg"
 	helmJSON := []byte(`{
   "chart_name": "supergiant",

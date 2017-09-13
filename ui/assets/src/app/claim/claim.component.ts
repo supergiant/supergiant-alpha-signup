@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Angulartics2GoogleTagManager } from 'angulartics2';
+import { Angulartics2GoogleTagManager, Angulartics2 } from 'angulartics2';
 import {Validators, FormGroup} from '@angular/forms';
 import {FormlyFieldConfig} from 'ng-formly';
 import { Http, Response, Headers } from '@angular/http';
@@ -55,7 +55,11 @@ export class ClaimComponent implements OnInit {
     },]
   }];
 
-  constructor(private http: Http, angulartics2GoogleTagManager: Angulartics2GoogleTagManager) { }
+  constructor(
+    private http: Http,
+    angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+    private angulartics2: Angulartics2
+  ) { }
 
   useInvite(user){
     const inviteCode = String(user.invite).toUpperCase()
@@ -63,13 +67,27 @@ export class ClaimComponent implements OnInit {
     this.http.get('https://alpha.supergiant.io/claim?invite=' + inviteCode + '&email=' + user.email).map(
       response => response.json()).subscribe(
       (result) => {
-        this.state.status = 1
+        this.state.status = 1;
         this.state.error = false;
-        this.state.message = 'Thank you, you will receive an email with login information shortly'
+        this.state.message = 'Thank you, you will receive an email with login information shortly';
+        this.angulartics2.eventTrack.next({
+          action: 'Success',
+          properties: {
+            category: 'Form',
+            label: 'alpha_claim_form'
+          }
+        });
       }, (error) => {
-        this.state.status = 1
-        this.state.error = true;
-        this.state.message = 'Invalid invite code.'
+        this.state.status = 1;
+        this.state.error = false;
+        this.state.message = 'You have entered an invalid invitation code.';
+        this.angulartics2.eventTrack.next({
+          action: 'Failure',
+          properties: {
+            category: 'Form',
+            label: 'alpha_claim_form'
+          }
+        });
       });
     }
 

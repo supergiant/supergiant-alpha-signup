@@ -4,7 +4,16 @@
 <div *ngIf="this.state.status == 0 && this.state.error == false">
   <div class="supergiant-signup-form">
     <div class="container-fluid">
-      <form role="form" novalidate [formGroup]="form" (ngSubmit)="useInvite(user)">
+      <form
+        role="form"
+        novalidate
+        [formGroup]="form"
+        (ngSubmit)="useInvite(user)"
+        angulartics2On="submit"
+        angularticsEvent="Submit"
+        angularticsCategory="Form"
+        [angularticsProperties]="{label: 'alpha_claim_form'}"
+        >
         <formly-form [model]="user" [fields]="userFields">
           <small class="form-text text-muted">
             Don't have a code?
@@ -31,7 +40,12 @@
 
   <div class="supergiant-signup-form">
     <div class="container-fluid">
-      <form role="form" novalidate [formGroup]="form" (ngSubmit)="useInvite(user)">
+      <form
+        role="form"
+        novalidate
+        [formGroup]="form"
+        (ngSubmit)="useInvite(user)"
+        >
         <formly-form [model]="user" [fields]="userFields">
           <small class="form-text text-muted">
             Don't have a code?

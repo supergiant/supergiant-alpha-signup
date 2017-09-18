@@ -189,7 +189,6 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 			respondWithError(w, http.StatusInternalServerError, err.Error())
 			return
 		}
-		return
 	}
 	defer row.Close()
 	var count string

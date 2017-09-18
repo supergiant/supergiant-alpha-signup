@@ -117,7 +117,7 @@ func ConfigEnv(a *App, i Invite) {
 	//
 	// releaseID := 65
 	userPass := RandomString(16)
-	waitErr := WaitFor("Helm Deployment", 5*time.Minute, 3*time.Second, func() (bool, error) {
+	waitErr := WaitFor("Helm Deployment", 30*time.Minute, 10*time.Second, func() (bool, error) {
 		_, err = client.Get("https://admin.alpha.supergiant.io/api/v0/helm_releases/" + strconv.Itoa(releaseID))
 		if err != nil {
 			log.Error(err)
@@ -169,7 +169,8 @@ func ConfigEnv(a *App, i Invite) {
 		log.Debug(req.URL)
 		req.Header.Add("Content-Type", `application/json`)
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
+			return false, nil
 		}
 
 		resp, err = client.Do(req)
@@ -206,7 +207,8 @@ func ConfigEnv(a *App, i Invite) {
 		req.Header.Add("Authorization", `SGAPI session="`+sesJSON.ID+`"`)
 		req.Header.Add("Content-Type", `application/json`)
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
+			return false, nil
 		}
 		resp, err = client.Do(req)
 		if err != nil {
@@ -227,7 +229,7 @@ func ConfigEnv(a *App, i Invite) {
 	// Done waiting
 	if waitErr != nil {
 		a.sendEmail("jordan@supergiant", "FAILED PROVISION", i.Invite+" - "+i.Email+"-"+customer)
-		log.Fatal(waitErr)
+		log.Error(waitErr)
 	}
 
 	emailBody := `Welcome to the SuperGiant Alpha.

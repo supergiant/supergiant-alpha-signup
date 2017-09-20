@@ -86,8 +86,6 @@ func ConfigEnv(a *App, i Invite) {
 		log.Error("Failed to launch")
 	}
 
-	log.Debug(string(helmJSON))
-
 	req, err := http.NewRequest("POST", "https://admin.alpha.supergiant.io/api/v0/helm_releases", bytes.NewBuffer(helmJSON))
 	if err != nil {
 		log.Error(err)
@@ -96,12 +94,10 @@ func ConfigEnv(a *App, i Invite) {
 	req.Header.Add("Authorization", `SGAPI token="`+a.APIToken+`"`)
 	req.Header.Add("Content-Type", `application/json`)
 	log.Debug(req)
-	log.Debug("------")
-	log.Debug(req.Body)
 	resp, err := client.Do(req)
 	log.Debug(resp)
 	bs, _ := ioutil.ReadAll(resp.Body)
-	log.Debug(string(bs))
+	// log.Debug(string(bs))
 	if err != nil {
 		log.Error(err)
 		log.Error("Failed to launch")
@@ -110,7 +106,6 @@ func ConfigEnv(a *App, i Invite) {
 	var respJSON HelmRelease
 	json.Unmarshal(bs, &respJSON)
 	log.Debug("Create Release response JSON:")
-	log.Debug(respJSON)
 	releaseID := respJSON.ID
 	log.Debug("Release ID")
 	log.Debug(releaseID)
@@ -143,7 +138,7 @@ func ConfigEnv(a *App, i Invite) {
 		}
 
 		bs, _ := ioutil.ReadAll(resp.Body)
-		log.Debug(string(bs))
+		// log.Debug(string(bs))
 
 		if resp.StatusCode != 200 {
 			return false, nil
@@ -151,8 +146,7 @@ func ConfigEnv(a *App, i Invite) {
 
 		var respJSON HelmRelease
 		json.Unmarshal(bs, &respJSON)
-		log.Debug("Release ID response JSON")
-		log.Debug(respJSON)
+		log.Debug("Description response JSON")
 		releaseStatus := respJSON.Status.Description
 
 		if releaseStatus == "deploying" {

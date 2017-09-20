@@ -46,6 +46,7 @@ type Reset struct {
 type App struct {
 	Router      *mux.Router
 	DB          *sql.DB
+	SGDB        *sql.DB
 	FS          fsWithDefault
 	APIToken    string
 	SupportPass string
@@ -58,6 +59,10 @@ type core struct {
 	PGHost      string
 	PGPort      string
 	PGDB        string
+	SGPGUser    string
+	SGPGPass    string
+	SGPGHost    string
+	SGPGPort    string
 	APIToken    string
 	SupportPass string
 	Mandrill    string
@@ -236,6 +241,20 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 		i.Claimed, err = strconv.ParseBool(string(col5))
 		log.Debug(i)
 		i.URL = RandomString(16)
+
+		// whenever I try to do this passing params I am getting an error
+		// this works for right now, so be it.
+		sqlStatement := "CREATE DATABASE " + i.URL + ";"
+		log.Debug(sqlStatement)
+		re, err := a.SGDB.Exec(sqlStatement)
+		log.Debug("DB setup result")
+		log.Debug(re)
+		log.Debug(err)
+		if err != nil {
+			log.Error(err)
+			log.Fatal("Failed to launch")
+		}
+
 		go ConfigEnv(a, i)
 	}
 
@@ -300,6 +319,26 @@ func main() {
 			Destination: &cr.PGDB,
 		},
 		cli.StringFlag{
+			Name:        "sgpguser",
+			Usage:       "SG Postgres User",
+			Destination: &cr.SGPGUser,
+		},
+		cli.StringFlag{
+			Name:        "sgpgpass",
+			Usage:       "SG Postgres Password",
+			Destination: &cr.SGPGPass,
+		},
+		cli.StringFlag{
+			Name:        "sgpghost",
+			Usage:       "SG Postgres Host",
+			Destination: &cr.SGPGHost,
+		},
+		cli.StringFlag{
+			Name:        "sgpgport",
+			Usage:       "SG Postgres Port",
+			Destination: &cr.SGPGPort,
+		},
+		cli.StringFlag{
 			Name:        "apitoken",
 			Usage:       "SG API Token",
 			Destination: &cr.APIToken,
@@ -339,12 +378,29 @@ func main() {
 			log.Fatal("Failed to init DB")
 		}
 
+		sgdbinfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable",
+			cr.SGPGHost, cr.SGPGPort, cr.SGPGUser, cr.SGPGPass)
+		log.Debug(sgdbinfo)
+
+		sgdb, err := sql.Open("postgres", sgdbinfo)
+		if err != nil {
+			log.Fatal("Failed to init DB")
+		}
+
 		err = db.Ping()
 		log.Debug(err)
 		if err != nil {
 			log.Fatal("Failed to open DB")
 		}
+
+		err = sgdb.Ping()
+		log.Debug(err)
+		if err != nil {
+			log.Fatal("Failed to open SGDB")
+		}
+
 		a.DB = db
+		a.SGDB = sgdb
 		a.Run()
 		return nil
 	}

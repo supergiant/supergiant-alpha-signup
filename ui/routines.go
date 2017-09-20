@@ -23,6 +23,9 @@ func ConfigEnv(a *App, i Invite) {
   "chart_version": "0.1.0",
   "config": {
     "api": {
+		  "psqlhost": "` + a.C.SGPGHost + `",
+      "psqluser": "` + a.C.SGPGUser + `",
+      "psqlpass": "` + a.C.SGPGPass + `",
       "enabled": true,
       "image": {
         "pullPolicy": "Always",
@@ -226,7 +229,7 @@ func ConfigEnv(a *App, i Invite) {
 		log.Error(waitErr)
 	}
 
-	emailBody := `Welcome to the SuperGiant Alpha.
+	emailBody := `Welcome to the Supergiant Alpha.
 
 Your environment has been configured. You can log in at https://alpha.supergiant.io/` + customer + `/ui/
 with the following credentials:
@@ -235,5 +238,5 @@ username: superadmin
 password: ` + userPass + `
 
 Please change your password once logged in.`
-	a.sendEmail(i.Email, "Welcome to the SuperGiant Alpha", emailBody)
+	a.sendEmail(i.Email, "Welcome to the Supergiant Alpha", emailBody)
 }

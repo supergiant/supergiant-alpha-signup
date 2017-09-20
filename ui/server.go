@@ -51,6 +51,7 @@ type App struct {
 	APIToken    string
 	SupportPass string
 	Mandrill    string
+	C           *core
 }
 
 type core struct {
@@ -244,7 +245,7 @@ func (a *App) useInvite(w http.ResponseWriter, r *http.Request) {
 
 		// whenever I try to do this passing params I am getting an error
 		// this works for right now, so be it.
-		sqlStatement := "CREATE DATABASE " + i.URL + ";"
+		sqlStatement := `CREATE DATABASE "` + i.URL + `";`
 		log.Debug(sqlStatement)
 		re, err := a.SGDB.Exec(sqlStatement)
 		log.Debug("DB setup result")
@@ -360,6 +361,7 @@ func main() {
 		a.APIToken = cr.APIToken
 		a.SupportPass = cr.SupportPass
 		a.Mandrill = cr.Mandrill
+		a.C = cr
 		a.FS = fsWithDefault{
 			underlying: &assetfs.AssetFS{Asset: ui.Asset, AssetDir: ui.AssetDir, AssetInfo: ui.AssetInfo, Prefix: "ui/assets/dist/"},
 			defaultDoc: "index.html",

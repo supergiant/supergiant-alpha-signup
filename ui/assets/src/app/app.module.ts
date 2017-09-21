@@ -10,17 +10,20 @@ import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 import { AppComponent } from './app.component';
 import { RequestComponent } from './request/request.component';
 import { ClaimComponent } from './claim/claim.component';
+import { ClosedComponent } from './closed/closed.component';
 
 const appRoutes: Routes = [
-  { path: 'request', component: RequestComponent },
-  { path: '',      component: ClaimComponent },
+  // { path: 'request', component: RequestComponent },
+  // { path: 'claim',      component: ClaimComponent },
+  { path: '', component: ClosedComponent }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     RequestComponent,
-    ClaimComponent
+    ClaimComponent,
+    ClosedComponent
   ],
   imports: [
       NgbModule.forRoot(),

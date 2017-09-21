@@ -41,6 +41,15 @@ footer a:link:visited {
   color: #3559B1;
 }
 
+main a.btn.btn-primary:link,
+main a.btn.btn-primary:link:visited,
+header a.btn.btn-primary:link,
+header a.btn.btn-primary:link:visited,
+footer a.btn.btn-primary:link,
+footer a.btn.btn-primary:link:visited {
+  color: #fff;
+}
+
 main a:link:hover,
 main a:link:visited:hover,
 header a:link:hover,
